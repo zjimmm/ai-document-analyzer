@@ -1,0 +1,27 @@
+# Worktrees
+.worktrees/
+
+# Environment
+.env
+
+# Java
+.gradle/
+build/
+*.jar
+*.class
+out/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
