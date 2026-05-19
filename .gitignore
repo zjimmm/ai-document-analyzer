@@ -10,6 +10,9 @@ build/
 *.jar
 *.class
 out/
+HELP.md
+logs/
+*.log
 
 # Python
 __pycache__/
