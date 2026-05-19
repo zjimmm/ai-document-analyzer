@@ -1,5 +1,6 @@
 package com.example.documentanalyzer.config;
 
+import io.netty.channel.ChannelOption;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ public class WebClientConfig {
     @Bean
     public WebClient pythonAiWebClient() {
         HttpClient httpClient = HttpClient.create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeoutSeconds * 1000)
                 .responseTimeout(Duration.ofSeconds(timeoutSeconds));
 
         return WebClient.builder()

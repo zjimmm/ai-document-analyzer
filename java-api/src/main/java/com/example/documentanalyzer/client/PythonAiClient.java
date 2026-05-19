@@ -21,6 +21,7 @@ public class PythonAiClient {
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(AnalyzeResponse.class)
-                .block();
+                .blockOptional()
+                .orElseThrow(() -> new RuntimeException("Python AI service returned empty response"));
     }
 }
