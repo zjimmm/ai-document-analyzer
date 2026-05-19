@@ -1,9 +1,12 @@
 import base64
 import json
+import logging
 import os
 import re
 
 import google.generativeai as genai
+
+logger = logging.getLogger(__name__)
 
 PROMPT = """Analyze this document and return ONLY a JSON object with exactly these fields:
 {
@@ -19,7 +22,10 @@ Return ONLY valid JSON — no markdown, no explanation, no code fences."""
 
 
 def analyze_document(file_content_b64: str, file_type: str) -> dict:
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("GEMINI_API_KEY environment variable not set")
+    genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-2.0-flash")
     file_bytes = base64.b64decode(file_content_b64)
 
@@ -36,6 +42,7 @@ def analyze_document(file_content_b64: str, file_type: str) -> dict:
     try:
         return json.loads(text)
     except json.JSONDecodeError:
+        logger.warning("Gemini returned non-JSON response, falling back to raw text")
         return {
             "summary": text,
             "extractedText": text,
