@@ -39,3 +39,11 @@ services:
       DB_USER: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       PYTHON_AI_URL: http://python-ai:8000
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      java-api:
+        condition: service_started

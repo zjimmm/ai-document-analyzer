@@ -7,10 +7,9 @@ vi.mock('./api/api', () => ({
 }))
 
 import App from './App'
-import { getDocuments, uploadDocument } from './api/api'
+import { getDocuments } from './api/api'
 
 const mockGetDocuments = vi.mocked(getDocuments)
-const mockUploadDocument = vi.mocked(uploadDocument)
 
 describe('App', () => {
   beforeEach(() => vi.clearAllMocks())
