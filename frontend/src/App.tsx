@@ -8,13 +8,17 @@ import DocumentDetail from './components/DocumentDetail'
 export default function App() {
   const [documents, setDocuments] = useState<DocumentResponse[]>([])
   const [selectedDocument, setSelectedDocument] = useState<DocumentResponse | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
 
   const fetchDocuments = useCallback(async () => {
     setLoading(true)
+    setFetchError(null)
     try {
       const docs = await getDocuments()
       setDocuments(docs)
+    } catch {
+      setFetchError('Failed to load documents.')
     } finally {
       setLoading(false)
     }
@@ -41,6 +45,8 @@ export default function App() {
             <h2 className="text-lg font-semibold mb-3">Documents</h2>
             {loading ? (
               <p className="text-gray-400 text-sm">Loading...</p>
+            ) : fetchError ? (
+              <p className="text-red-500 text-sm">{fetchError}</p>
             ) : (
               <DocumentList
                 documents={documents}
