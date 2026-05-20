@@ -1,0 +1,19 @@
+Invoice #12345
+Date: May 20, 2026
+
+Bill To:
+John Smith
+123 Main Street
+New York, NY 10001
+
+Items:
+- Web Development Services: $2,500.00
+- UI/UX Design: $1,200.00
+- Hosting Setup: $300.00
+
+Subtotal: $4,000.00
+Tax (10%): $400.00
+Total Due: $4,400.00
+
+Payment due within 30 days.
+Thank you for your business!

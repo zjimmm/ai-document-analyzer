@@ -1,0 +1,21 @@
+# AI Document Analyzer - API Tests
+
+### Upload a document
+POST http://localhost:8080/api/documents
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="test-document.pdf"
+Content-Type: application/pdf
+
+< ./test-document.pdf
+--boundary--
+
+### Get all documents
+GET http://localhost:8080/api/documents
+
+### Get document by ID (replace with actual ID from upload response)
+GET http://localhost:8080/api/documents/your-document-id-here
+
+### Python AI health check
+GET http://localhost:8000/health

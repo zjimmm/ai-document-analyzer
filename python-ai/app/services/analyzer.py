@@ -26,7 +26,7 @@ def analyze_document(file_content_b64: str, file_type: str) -> dict:
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not set")
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-2.5-flash")
     file_bytes = base64.b64decode(file_content_b64)
 
     response = model.generate_content([
