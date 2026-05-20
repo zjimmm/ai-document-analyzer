@@ -22,7 +22,13 @@ export default function DocumentDetail({ document }: Props) {
     <div className="space-y-4">
       <h3 className="font-semibold text-base">{document.fileName}</h3>
 
-      {document.summary && (
+      {document.status === 'FAILED' && document.summary && (
+        <section>
+          <h4 className="text-sm font-medium text-red-500 mb-1">Analysis Failed</h4>
+          <p className="text-sm text-red-600">{document.summary}</p>
+        </section>
+      )}
+      {document.status !== 'FAILED' && document.summary && (
         <section>
           <h4 className="text-sm font-medium text-gray-500 mb-1">Summary</h4>
           <p className="text-sm">{document.summary}</p>

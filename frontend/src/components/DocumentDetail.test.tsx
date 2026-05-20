@@ -51,4 +51,10 @@ describe('DocumentDetail', () => {
     render(<DocumentDetail document={doc} />)
     expect(screen.getByText('Analysis failed: timeout')).toBeInTheDocument()
   })
+
+  it('does not crash or render JSON section for malformed extractedJson', () => {
+    const doc = makeDoc({ extractedJson: '{ bad json' })
+    render(<DocumentDetail document={doc} />)
+    expect(screen.queryByText(/structured data/i)).not.toBeInTheDocument()
+  })
 })
