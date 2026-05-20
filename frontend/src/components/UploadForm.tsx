@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { uploadDocument } from '../api/api'
 import type { DocumentResponse } from '../types/document'
 
-const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg']
+const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg']
 
 interface Props {
   onUploadComplete: (doc: DocumentResponse) => void
