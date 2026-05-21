@@ -29,14 +29,14 @@ describe('DocumentList', () => {
     expect(screen.getByText('receipt.png')).toBeInTheDocument()
   })
 
-  it('renders status badge for each document', () => {
+  it('renders status label for each document', () => {
     const docs = [
       makeDoc({ id: '1', status: 'COMPLETED' }),
       makeDoc({ id: '2', status: 'FAILED' }),
     ]
     render(<DocumentList documents={docs} selectedId={null} onSelect={vi.fn()} />)
-    expect(screen.getByText('COMPLETED')).toBeInTheDocument()
-    expect(screen.getByText('FAILED')).toBeInTheDocument()
+    expect(screen.getByText('Done')).toBeInTheDocument()
+    expect(screen.getByText('Failed')).toBeInTheDocument()
   })
 
   it('calls onSelect when a document is clicked', async () => {
@@ -53,7 +53,9 @@ describe('DocumentList', () => {
       <DocumentList documents={docs} selectedId="1" onSelect={vi.fn()} />
     )
     const items = container.querySelectorAll('li')
-    expect(items[0].className).toContain('bg-gray-100')
-    expect(items[1].className).not.toContain('bg-gray-100')
+    // Selected item has bg-slate-800 (not just hover state)
+    expect(items[0].className).toMatch(/(?:^|\s)bg-slate-800(?:\s|$)/)
+    // Unselected item should not have bg-slate-800 (but may have hover:bg-slate-800)
+    expect(items[1].className).not.toMatch(/(?:^|\s)bg-slate-800(?:\s|$)/)
   })
 })
