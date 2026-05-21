@@ -33,10 +33,14 @@ describe('DocumentList', () => {
     const docs = [
       makeDoc({ id: '1', status: 'COMPLETED' }),
       makeDoc({ id: '2', status: 'FAILED' }),
+      makeDoc({ id: '3', status: 'PENDING' }),
+      makeDoc({ id: '4', status: 'PROCESSING' }),
     ]
     render(<DocumentList documents={docs} selectedId={null} onSelect={vi.fn()} />)
     expect(screen.getByText('Done')).toBeInTheDocument()
     expect(screen.getByText('Failed')).toBeInTheDocument()
+    expect(screen.getByText('Pending')).toBeInTheDocument()
+    expect(screen.getByText('Processing')).toBeInTheDocument()
   })
 
   it('calls onSelect when a document is clicked', async () => {
