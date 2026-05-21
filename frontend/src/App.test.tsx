@@ -17,7 +17,7 @@ describe('App', () => {
   it('shows loading state initially', () => {
     mockGetDocuments.mockReturnValue(new Promise(() => {}))
     render(<App />)
-    expect(screen.getByText(/loading/i)).toBeInTheDocument()
+    expect(document.querySelectorAll('.animate-pulse').length).toBe(3)
   })
 
   it('renders document list after fetch', async () => {

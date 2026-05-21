@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getDocuments } from './api/api'
 import type { DocumentResponse } from './types/document'
-import UploadForm from './components/UploadForm'
-import DocumentList from './components/DocumentList'
+import Sidebar from './components/Sidebar'
 import DocumentDetail from './components/DocumentDetail'
 
 export default function App() {
@@ -34,32 +33,17 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-4 shadow-sm">
-        <h1 className="text-xl font-bold text-gray-800">AI Document Analyzer</h1>
-      </header>
-      <main className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <UploadForm onUploadComplete={handleUploadComplete} />
-          <div className="bg-white border rounded-lg p-4">
-            <h2 className="text-lg font-semibold mb-3">Documents</h2>
-            {loading ? (
-              <p className="text-gray-400 text-sm">Loading...</p>
-            ) : fetchError ? (
-              <p className="text-red-500 text-sm">{fetchError}</p>
-            ) : (
-              <DocumentList
-                documents={documents}
-                selectedId={selectedDocument?.id ?? null}
-                onSelect={setSelectedDocument}
-              />
-            )}
-          </div>
-        </div>
-        <div className="bg-white border rounded-lg p-4">
-          <h2 className="text-lg font-semibold mb-3">Analysis Result</h2>
-          <DocumentDetail document={selectedDocument} />
-        </div>
+    <div className="flex h-screen bg-slate-950">
+      <Sidebar
+        documents={documents}
+        selectedId={selectedDocument?.id ?? null}
+        onSelect={setSelectedDocument}
+        onUploadComplete={handleUploadComplete}
+        loading={loading}
+        fetchError={fetchError}
+      />
+      <main className="flex-1 overflow-y-auto p-6">
+        <DocumentDetail document={selectedDocument} />
       </main>
     </div>
   )
