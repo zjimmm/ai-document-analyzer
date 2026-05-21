@@ -8,6 +8,7 @@
 .gradle/
 build/
 *.jar
+!java-api/gradle/wrapper/gradle-wrapper.jar
 *.class
 out/
 HELP.md
