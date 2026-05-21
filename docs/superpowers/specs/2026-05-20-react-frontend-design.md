@@ -79,7 +79,7 @@ interface DocumentResponse {
 - Calls `onSelect` callback when a document is clicked
 
 ### `DocumentDetail.tsx`
-- Shows summary, extracted text, and structured JSON (formatted with `JSON.stringify(..., null, 2)`)
+- Shows summary, extracted text, and structured JSON (`extractedJson` is a JSON string from the API — parse with `JSON.parse` then format with `JSON.stringify(..., null, 2)` for display)
 - Shows failure reason (from `summary` field) when status is FAILED
 - Empty state when no document is selected
 
