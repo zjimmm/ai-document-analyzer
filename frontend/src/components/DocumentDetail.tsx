@@ -22,7 +22,7 @@ export default function DocumentDetail({ document }: Props) {
   if (document.status === 'FAILED') {
     return (
       <div className="p-6">
-        <h3 className="text-base font-semibold text-slate-800 mb-4">{document.fileName}</h3>
+        <h3 className="text-base font-semibold text-slate-100 mb-4">{document.fileName}</h3>
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <h4 className="text-sm font-medium text-red-700 mb-1">Analysis Failed</h4>
           <p className="text-sm text-red-600">{document.summary ?? 'An unknown error occurred.'}</p>
@@ -34,7 +34,7 @@ export default function DocumentDetail({ document }: Props) {
   if (document.status === 'PENDING' || document.status === 'PROCESSING') {
     return (
       <div className="p-6">
-        <h3 className="text-base font-semibold text-slate-800 mb-4">{document.fileName}</h3>
+        <h3 className="text-base font-semibold text-slate-100 mb-4">{document.fileName}</h3>
         <div className="flex items-center gap-2 text-slate-500">
           <svg className="animate-spin h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -63,7 +63,7 @@ export default function DocumentDetail({ document }: Props) {
 
   return (
     <div className="p-6">
-      <h3 className="text-base font-semibold text-slate-800 mb-4">{document.fileName}</h3>
+      <h3 className="text-base font-semibold text-slate-100 mb-4">{document.fileName}</h3>
 
       <div className="border-b border-slate-200 mb-4">
         <div className="flex gap-4">
@@ -74,7 +74,7 @@ export default function DocumentDetail({ document }: Props) {
               className={`text-sm pb-2 border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? 'border-indigo-500 text-indigo-600 font-medium'
-                  : 'border-transparent text-slate-500 hover:text-slate-700'
+                  : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
               {tab.label}
@@ -84,7 +84,7 @@ export default function DocumentDetail({ document }: Props) {
       </div>
 
       {activeTab === 'summary' && (
-        <p className="text-sm text-slate-700 leading-relaxed">
+        <p className="text-sm text-slate-300 leading-relaxed">
           {document.summary ?? <span className="text-slate-400">No summary available.</span>}
         </p>
       )}
