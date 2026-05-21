@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import DocumentDetail from './DocumentDetail'
 import type { DocumentResponse } from '../types/document'
 
@@ -21,40 +22,47 @@ describe('DocumentDetail', () => {
     expect(screen.getByText(/select a document/i)).toBeInTheDocument()
   })
 
-  it('renders file name', () => {
+  it('renders file name for completed document', () => {
     render(<DocumentDetail document={makeDoc()} />)
     expect(screen.getByText('invoice.pdf')).toBeInTheDocument()
   })
 
-  it('renders summary', () => {
+  it('shows summary tab by default for COMPLETED document', () => {
     render(<DocumentDetail document={makeDoc()} />)
     expect(screen.getByText('Invoice from ABC Corp for $4400.')).toBeInTheDocument()
   })
 
-  it('renders extracted text', () => {
+  it('switches to extracted text tab', async () => {
     render(<DocumentDetail document={makeDoc()} />)
+    await userEvent.click(screen.getByRole('button', { name: 'Extracted Text' }))
     expect(screen.getByText(/Invoice #12345/)).toBeInTheDocument()
   })
 
-  it('renders formatted structured JSON', () => {
+  it('switches to structured data tab and formats JSON', async () => {
     render(<DocumentDetail document={makeDoc()} />)
+    await userEvent.click(screen.getByRole('button', { name: 'Structured Data' }))
     expect(screen.getByText(/"invoiceNumber": "12345"/)).toBeInTheDocument()
   })
 
-  it('renders failure message when status is FAILED', () => {
-    const doc = makeDoc({
-      status: 'FAILED',
-      summary: 'Analysis failed: timeout',
-      extractedText: null,
-      extractedJson: null,
-    })
-    render(<DocumentDetail document={doc} />)
-    expect(screen.getByText('Analysis failed: timeout')).toBeInTheDocument()
+  it('shows Analysis Failed for FAILED document', () => {
+    render(<DocumentDetail document={makeDoc({ status: 'FAILED', summary: 'Timed out.' })} />)
+    expect(screen.getByText('Analysis Failed')).toBeInTheDocument()
+    expect(screen.getByText('Timed out.')).toBeInTheDocument()
   })
 
-  it('does not crash or render JSON section for malformed extractedJson', () => {
-    const doc = makeDoc({ extractedJson: '{ bad json' })
-    render(<DocumentDetail document={doc} />)
-    expect(screen.queryByText(/structured data/i)).not.toBeInTheDocument()
+  it('shows in-progress state for PROCESSING document', () => {
+    render(<DocumentDetail document={makeDoc({ status: 'PROCESSING' })} />)
+    expect(screen.getByText(/analysis in progress/i)).toBeInTheDocument()
+  })
+
+  it('shows in-progress state for PENDING document', () => {
+    render(<DocumentDetail document={makeDoc({ status: 'PENDING' })} />)
+    expect(screen.getByText(/analysis in progress/i)).toBeInTheDocument()
+  })
+
+  it('does not crash for malformed extractedJson', async () => {
+    render(<DocumentDetail document={makeDoc({ extractedJson: '{ bad json' })} />)
+    await userEvent.click(screen.getByRole('button', { name: 'Structured Data' }))
+    expect(screen.getByText(/no structured data/i)).toBeInTheDocument()
   })
 })
