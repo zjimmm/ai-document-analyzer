@@ -5,6 +5,7 @@ import com.example.documentanalyzer.dto.AnalyzeRequest;
 import com.example.documentanalyzer.dto.AnalyzeResponse;
 import com.example.documentanalyzer.dto.DocumentResponse;
 import com.example.documentanalyzer.entity.Document;
+import com.example.documentanalyzer.mapper.DocumentMapper;
 import com.example.documentanalyzer.repository.DocumentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final PythonAiClient pythonAiClient;
     private final ObjectMapper objectMapper;
+    private final DocumentMapper documentMapper;
 
     private static final List<String> ALLOWED_TYPES = List.of(
             "application/pdf", "image/png", "image/jpg", "image/jpeg"
@@ -59,18 +61,18 @@ public class DocumentService {
         }
 
         documentRepository.save(document);
-        return toResponse(document);
+        return documentMapper.toResponse(document);
     }
 
     public List<DocumentResponse> findAll() {
         return documentRepository.findAll().stream()
-                .map(this::toResponse)
+                .map(documentMapper::toResponse)
                 .toList();
     }
 
     public DocumentResponse findById(UUID id) {
         return documentRepository.findById(id)
-                .map(this::toResponse)
+                .map(documentMapper::toResponse)
                 .orElseThrow(() -> new RuntimeException("Document not found: " + id));
     }
 
@@ -81,13 +83,5 @@ public class DocumentService {
         if (!ALLOWED_TYPES.contains(file.getContentType())) {
             throw new IllegalArgumentException("File type not allowed: " + file.getContentType());
         }
-    }
-
-    private DocumentResponse toResponse(Document doc) {
-        return new DocumentResponse(
-                doc.getId(), doc.getFileName(), doc.getFileType(),
-                doc.getStatus(), doc.getSummary(), doc.getExtractedText(),
-                doc.getExtractedJson(), doc.getCreatedAt()
-        );
     }
 }

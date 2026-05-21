@@ -4,10 +4,12 @@ import com.example.documentanalyzer.client.PythonAiClient;
 import com.example.documentanalyzer.dto.AnalyzeResponse;
 import com.example.documentanalyzer.dto.DocumentResponse;
 import com.example.documentanalyzer.entity.Document;
+import com.example.documentanalyzer.mapper.DocumentMapper;
 import com.example.documentanalyzer.repository.DocumentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -32,6 +34,9 @@ class DocumentServiceTest {
 
     @Spy
     private ObjectMapper objectMapper;
+
+    @Spy
+    private DocumentMapper documentMapper = Mappers.getMapper(DocumentMapper.class);
 
     @InjectMocks
     private DocumentService documentService;
