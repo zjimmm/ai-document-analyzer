@@ -1,6 +1,9 @@
 package com.example.documentanalyzer.controller;
 
+import com.example.documentanalyzer.client.ExportClient;
 import com.example.documentanalyzer.dto.DocumentResponse;
+import com.example.documentanalyzer.entity.Document;
+import com.example.documentanalyzer.repository.DocumentRepository;
 import com.example.documentanalyzer.service.DocumentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -26,6 +30,12 @@ class DocumentControllerTest {
 
     @MockBean
     private DocumentService documentService;
+
+    @MockBean
+    private DocumentRepository documentRepository;
+
+    @MockBean
+    private ExportClient exportClient;
 
     @Test
     void upload_returnsOkWithDocumentResponse() throws Exception {
@@ -83,5 +93,38 @@ class DocumentControllerTest {
         mockMvc.perform(multipart("/api/documents").file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").exists());
+    }
+
+    @Test
+    void testExportDocument_completed() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        Document document = new Document();
+        document.setFileName("invoice.pdf");
+        document.setStatus("COMPLETED");
+        document.setSummary("Invoice from ABC Corp");
+        document.setExtractedText("Invoice #1234");
+        document.setExtractedJson("{\"amount\":1500}");
+
+        when(documentRepository.findById(id)).thenReturn(Optional.of(document));
+        when(exportClient.export(any())).thenReturn("PDF_BYTES".getBytes());
+
+        mockMvc.perform(get("/api/documents/" + id + "/export"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", "application/pdf"));
+    }
+
+    @Test
+    void testExportDocument_notCompleted() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        Document document = new Document();
+        document.setFileName("invoice.pdf");
+        document.setStatus("PENDING");
+
+        when(documentRepository.findById(id)).thenReturn(Optional.of(document));
+
+        mockMvc.perform(get("/api/documents/" + id + "/export"))
+                .andExpect(status().isUnprocessableEntity());
     }
 }

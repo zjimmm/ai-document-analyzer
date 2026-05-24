@@ -65,4 +65,12 @@ describe('DocumentDetail', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Structured Data' }))
     expect(screen.getByText(/no structured data/i)).toBeInTheDocument()
   })
+
+  it('renders Export PDF button for completed document', () => {
+    const doc = makeDoc({ id: 'abc-123', status: 'COMPLETED' })
+    render(<DocumentDetail document={doc} />)
+    const link = screen.getByRole('link', { name: 'Export PDF' })
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/api/documents/abc-123/export')
+  })
 })

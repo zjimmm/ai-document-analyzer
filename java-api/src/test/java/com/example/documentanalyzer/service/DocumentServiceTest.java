@@ -1,5 +1,6 @@
 package com.example.documentanalyzer.service;
 
+import com.example.documentanalyzer.client.NotificationClient;
 import com.example.documentanalyzer.client.PythonAiClient;
 import com.example.documentanalyzer.dto.AnalyzeResponse;
 import com.example.documentanalyzer.dto.DocumentResponse;
@@ -31,6 +32,9 @@ class DocumentServiceTest {
 
     @Mock
     private PythonAiClient pythonAiClient;
+
+    @Mock
+    private NotificationClient notificationClient;
 
     @Spy
     private ObjectMapper objectMapper;

@@ -15,3 +15,9 @@ spring:
 python-ai:
   base-url: ${PYTHON_AI_URL:http://localhost:8000}
   timeout-seconds: 60
+
+notification-service:
+  base-url: ${NOTIFICATION_SERVICE_URL:http://localhost:8001}
+
+export-service:
+  base-url: ${EXPORT_SERVICE_URL:http://localhost:8002}

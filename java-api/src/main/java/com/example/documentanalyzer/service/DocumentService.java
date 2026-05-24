@@ -1,5 +1,6 @@
 package com.example.documentanalyzer.service;
 
+import com.example.documentanalyzer.client.NotificationClient;
 import com.example.documentanalyzer.client.PythonAiClient;
 import com.example.documentanalyzer.dto.AnalyzeRequest;
 import com.example.documentanalyzer.dto.AnalyzeResponse;
@@ -23,6 +24,7 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final PythonAiClient pythonAiClient;
+    private final NotificationClient notificationClient;
     private final ObjectMapper objectMapper;
     private final DocumentMapper documentMapper;
 
@@ -61,6 +63,12 @@ public class DocumentService {
         }
 
         documentRepository.save(document);
+        notificationClient.notify(
+                document.getId().toString(),
+                document.getFileName(),
+                document.getStatus(),
+                document.getSummary()
+        );
         return documentMapper.toResponse(document);
     }
 

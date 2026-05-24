@@ -63,7 +63,16 @@ export default function DocumentDetail({ document }: Props) {
 
   return (
     <div className="p-6">
-      <h3 className="text-base font-semibold text-slate-100 mb-4">{document.fileName}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-base font-semibold text-slate-100">{document.fileName}</h3>
+        <a
+          href={`/api/documents/${document.id}/export`}
+          download
+          className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+        >
+          Export PDF
+        </a>
+      </div>
 
       <div className="border-b border-slate-200 mb-4">
         <div className="flex gap-4">
